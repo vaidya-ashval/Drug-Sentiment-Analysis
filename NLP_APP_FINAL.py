@@ -17,6 +17,7 @@ st.set_page_config(layout="wide")
 
 # Create a sidebar with a dropdown for selecting the condition
 condition_list = df["condition"].unique().tolist()
+condition_list.sort()  # Sort the list in ascending order
 # selected_condition = st.sidebar.selectbox("Select Condition", condition_list)
 st.sidebar.markdown("<b><i>SELECT A MEDICAL CONDITION</i></b>", unsafe_allow_html=True)
 selected_condition = st.sidebar.selectbox("", condition_list)
@@ -45,7 +46,7 @@ tabs = st.tabs(["📈 General Sentiment Analysis", "🗃 Homburg et al. (2015)"]
 
 def generate_wordcloud(text):
             # Set the maximum font size to 50
-            wordcloud = WordCloud(max_font_size=50, width=400, height=200).generate(text)
+            wordcloud = WordCloud(max_font_size=50, width=400, height=200,background_color='white').generate(text)
             plt.figure(figsize=(8, 4))
             plt.imshow(wordcloud, interpolation="bilinear")
             plt.axis("off")
