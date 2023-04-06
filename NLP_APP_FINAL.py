@@ -148,7 +148,7 @@ with tabs[1]:
                 generate_wordcloud(positive_text)
 
         with columns[1]:
-            st.write("<h5 style='color: #3D59AB; font-family: Arial;'>Least Useful Drug Review</h5>", unsafe_allow_html=True)
+            st.write("<h5 style='color: #3D59AB; font-family: Arial;'>Least Useful Drug Review:</h5>", unsafe_allow_html=True)
             st.info("- Drug Name: " + most_useful_drug_neg)
             st.info("- Patient Review:\n" + neg_review)
             # Display the word cloud for negative reviews
