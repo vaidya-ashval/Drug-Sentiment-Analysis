@@ -15,13 +15,19 @@ df = pd.read_csv(data_file)  # Replace "your_data.csv" with the name of your dat
 
 st.set_page_config(layout="wide")
 
-# Create a sidebar with a dropdown for selecting the condition
+#Add a title
+st.title("Drugs Reviews Sentiment Analysis")
+#Add author
+# Créer une liste de conditions pour la sidebar
 condition_list = df["condition"].unique().tolist()
-condition_list.sort()  # Sort the list in ascending order
-# selected_condition = st.sidebar.selectbox("Select Condition", condition_list)
-st.sidebar.markdown("<b><i>SELECT A MEDICAL CONDITION</i></b>", unsafe_allow_html=True)
+condition_list.sort()
+
+# Ajouter une liste déroulante pour sélectionner une condition
+st.sidebar.markdown("<b><i style='font-size: 20px'>SELECT A MEDICAL CONDITION</i></b>", unsafe_allow_html=True)
 selected_condition = st.sidebar.selectbox("", condition_list)
 
+# Ajouter du texte en bas de la sidebar
+st.caption("Created by S. Gollapalli, J. Schneegans, Y. Thonukunuru, A. Vaidya")
 
 def sidebar_bg(side_bg):
 
@@ -42,7 +48,7 @@ sidebar_bg(side_bg)
 
 
 # Create tabs
-tabs = st.tabs(["📈 General Sentiment Analysis", "🗃 Homburg et al. (2015)"])
+tabs = st.tabs(["📈 General Sentiment Analysis"])
 
 def generate_wordcloud(text):
             # Set the maximum font size to 50
@@ -63,7 +69,7 @@ with tabs[0]:
     filtered_df = df[df["condition"] == selected_condition]
 
     # Check if the filtered dataframe only has "neu" values
-    if filtered_df["RobertaSentiment"].nunique() == 1 and filtered_df["RobertaSentiment"].unique()[0] == "Neu":
+    if filtered_df["RobertaSentiment"].nunique() == 1 and filtered_df["RobertaSentiment"].unique()[0] == "neu":
         only_available_drug = filtered_df["drugName"].iloc[0]
         st.write("Only Available Drug:")
         st.write("- " + only_available_drug)
@@ -85,6 +91,12 @@ with tabs[0]:
         least_recommended_drugs_neg = negative_df["drugName"].value_counts()
         least_recommended_drugs_neg = least_recommended_drugs_neg[least_recommended_drugs_neg == least_recommended_drugs_neg.max()]
         least_recommended_drugs_neg = least_recommended_drugs_neg.index.tolist()
+        
+        # Get the patient review and review date for the most useful drugs
+        pos_review = positive_df.loc[positive_df["Useful"].idxmax(), "patientreview"]
+        pos_review_date = positive_df.loc[positive_df["Useful"].idxmax(), "reviewdate"]
+        neg_review = negative_df.loc[negative_df["Useful"].idxmax(), "patientreview"]
+        neg_review_date = negative_df.loc[negative_df["Useful"].idxmax(), "reviewdate"]
 
         # Display the drug suggestions with the corresponding word clouds
         with col1:
@@ -93,7 +105,9 @@ with tabs[0]:
                 st.success(most_recommended_drugs_pos[0])
             else:
                 st.success(most_recommended_drug_pos)
-            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Most Loved Drug</span></b>", unsafe_allow_html=True)
+                st.write("<b><span style='font-size: 16pt;'>Patient Review:</span></b>", unsafe_allow_html=True)
+                st.success(pos_review)
+            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Most Loved Drug:</span></b>", unsafe_allow_html=True)
             positive_text = " ".join(positive_df[positive_df["drugName"] == most_recommended_drug_pos]["patientreview"].tolist())
             generate_wordcloud(positive_text)
         
@@ -103,58 +117,60 @@ with tabs[0]:
                 st.info(least_recommended_drugs_neg[0])
             else:
                 st.info(least_recommended_drug_neg)
-            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Least Loved Drug</span></b>", unsafe_allow_html=True)
+                st.write("<b><span style='font-size: 16pt;'>Patient Review:</span></b>", unsafe_allow_html=True)
+                st.info(neg_review)
+            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Least Loved Drug:</span></b>", unsafe_allow_html=True)
             negative_text = " ".join(negative_df[negative_df["drugName"] == least_recommended_drug_neg]["patientreview"].tolist())
             generate_wordcloud(negative_text)
 
-# Display the chart in the "Chart" tab
-with tabs[1]:
-    st.subheader("💊 Drug Suggestions for " + selected_condition+ " based on Homburg et al. (2015)")
-    # Filter the data based on the selected condition
-    filtered_df = df[df["condition"] == selected_condition]
+# # Display the chart in the "Chart" tab
+# with tabs[1]:
+#     st.subheader("💊 Drug Suggestions for " + selected_condition+ " based on Homburg et al. (2015)")
+#     # Filter the data based on the selected condition
+#     filtered_df = df[df["condition"] == selected_condition]
 
-    # Check if the filtered dataframe only has "neu" values
-    if filtered_df["RobertaSentiment"].nunique() == 1 and filtered_df["RobertaSentiment"].unique()[0] == "neu":
-        only_available_drug = filtered_df["drugName"].iloc[0]
-        st.write("Only Available Drug:")
-        st.write("- " + only_available_drug)
-    else:
-        # Filter the data for positive and negative sentiments
-        positive_df = filtered_df[filtered_df["RobertaSentiment"] == "Pos"]
-        negative_df = filtered_df[filtered_df["RobertaSentiment"] == "Neg"]
+#     # Check if the filtered dataframe only has "neu" values
+#     if filtered_df["RobertaSentiment"].nunique() == 1 and filtered_df["RobertaSentiment"].unique()[0] == "neu":
+#         only_available_drug = filtered_df["drugName"].iloc[0]
+#         st.write("Only Available Drug:")
+#         st.write("- " + only_available_drug)
+#     else:
+#         # Filter the data for positive and negative sentiments
+#         positive_df = filtered_df[filtered_df["RobertaSentiment"] == "Pos"]
+#         negative_df = filtered_df[filtered_df["RobertaSentiment"] == "Neg"]
 
-        # Get the drugName(s) with the most number of observations for positive and negative sentiments
-        most_useful_drug_pos = positive_df.loc[positive_df["Useful"].idxmax(), "drugName"]
-        most_useful_drug_neg = negative_df.loc[negative_df["Useful"].idxmax(), "drugName"]
+#         # Get the drugName(s) with the most number of observations for positive and negative sentiments
+#         most_useful_drug_pos = positive_df.loc[positive_df["Useful"].idxmax(), "drugName"]
+#         most_useful_drug_neg = negative_df.loc[negative_df["Useful"].idxmax(), "drugName"]
 
-        # Get the patient review and review date for the most useful drugs
-        pos_review = positive_df.loc[positive_df["Useful"].idxmax(), "patientreview"]
-        pos_review_date = positive_df.loc[positive_df["Useful"].idxmax(), "reviewdate"]
-        neg_review = negative_df.loc[negative_df["Useful"].idxmax(), "patientreview"]
-        neg_review_date = negative_df.loc[negative_df["Useful"].idxmax(), "reviewdate"]
+#         # Get the patient review and review date for the most useful drugs
+#         pos_review = positive_df.loc[positive_df["Useful"].idxmax(), "patientreview"]
+#         pos_review_date = positive_df.loc[positive_df["Useful"].idxmax(), "reviewdate"]
+#         neg_review = negative_df.loc[negative_df["Useful"].idxmax(), "patientreview"]
+#         neg_review_date = negative_df.loc[negative_df["Useful"].idxmax(), "reviewdate"]
 
      
 
-        # Display the results
-        columns = st.columns(2)
-        with columns[0]:
-            st.write("<h5 style='color: #3D59AB; font-family: Arial;'>Most Useful Drug Review:</h5>", unsafe_allow_html=True)
-            st.success("- Drug Name: " + most_useful_drug_pos)
-            st.success("- Patient Review:\n" + pos_review)
-            # Display the word cloud for positive reviews
-            with st.container():
-                st.subheader("Word Cloud for Positive Reviews")
-                positive_text = " ".join(positive_df["patientreview"].tolist())
-                generate_wordcloud(positive_text)
+#         # Display the results
+#         columns = st.columns(2)
+#         with columns[0]:
+#             st.write("<h5 style='color: #3D59AB; font-family: Arial;'>Most Useful Drug Review:</h5>", unsafe_allow_html=True)
+#             st.success("- Drug Name: " + most_useful_drug_pos)
+#             st.success("- Patient Review:\n" + pos_review)
+#             # Display the word cloud for positive reviews
+#             with st.container():
+#                 st.subheader("Word Cloud for Positive Reviews")
+#                 positive_text = " ".join(positive_df["patientreview"].tolist())
+#                 generate_wordcloud(positive_text)
 
-        with columns[1]:
-            st.write("<h5 style='color: #3D59AB; font-family: Arial;'>Least Useful Drug Review:</h5>", unsafe_allow_html=True)
-            st.info("- Drug Name: " + most_useful_drug_neg)
-            st.info("- Patient Review:\n" + neg_review)
-            # Display the word cloud for negative reviews
-            with st.container():
-                st.subheader("Word Cloud for Negative Reviews")
-                negative_text = " ".join(negative_df["patientreview"].tolist())
-                generate_wordcloud(negative_text)
+#         with columns[1]:
+#             st.write("<h5 style='color: #3D59AB; font-family: Arial;'>Least Useful Drug Review:</h5>", unsafe_allow_html=True)
+#             st.info("- Drug Name: " + most_useful_drug_neg)
+#             st.info("- Patient Review:\n" + neg_review)
+#             # Display the word cloud for negative reviews
+#             with st.container():
+#                 st.subheader("Word Cloud for Negative Reviews")
+#                 negative_text = " ".join(negative_df["patientreview"].tolist())
+#                 generate_wordcloud(negative_text)
                 
         
