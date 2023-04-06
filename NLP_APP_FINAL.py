@@ -29,7 +29,7 @@ df = pd.read_csv(url)  # Replace "your_data.csv" with the name of your data file
 # )
 
 
-st.markdown(page_bg_img, unsafe_allow_html=True)
+# st.markdown(page_bg_img, unsafe_allow_html=True)
 
 
 # Create a sidebar with a dropdown for selecting the condition
