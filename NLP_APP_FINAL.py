@@ -7,7 +7,8 @@ import base64
 
 
 # Load the data
-df = pd.read_csv(r"C:\Users\avaidya1\Downloads\v4.csv")  # Replace "your_data.csv" with the name of your data file
+url = 'v4.csv'
+df = pd.read_csv(url)  # Replace "your_data.csv" with the name of your data file
 
 # # set the page configuration
 # st.set_page_config(page_title="My Streamlit App", page_icon="🚀", layout="centered")
