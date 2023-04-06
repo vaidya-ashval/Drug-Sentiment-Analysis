@@ -28,17 +28,6 @@ df = pd.read_csv(url)  # Replace "your_data.csv" with the name of your data file
 #     unsafe_allow_html=True,
 # )
 
-# Load background image
-background_image = Image.open("C:/Users/avaidya1/Pictures/ABC.png")
-# Set app background image
-page_bg_img = '''
-<style>
-body {
-background-image: url("data:image/png;base64,%s");
-background-size: cover;
-}
-</style>
-''' % base64.b64encode(open("C:/Users/avaidya1/Pictures/ABC.png", 'rb').read()).decode()
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
