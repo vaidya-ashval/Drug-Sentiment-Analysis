@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 import base64
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
+data_file = 'v5.csv'
 
 # Load the data
-df = pd.read_csv(r"C:\Users\avaidya1\Downloads\v5.csv")  # Replace "your_data.csv" with the name of your data file
+df = pd.read_csv(data_file)  # Replace "your_data.csv" with the name of your data file
 
 # Create a sidebar with a dropdown for selecting the condition
 condition_list = df["condition"].unique().tolist()
@@ -33,7 +34,7 @@ def sidebar_bg(side_bg):
       """,
       unsafe_allow_html=True,
       )
-side_bg = "C:/Users/avaidya1/Downloads/Picture7.png"
+side_bg = "Picture7.png"
 sidebar_bg(side_bg)
 
 
