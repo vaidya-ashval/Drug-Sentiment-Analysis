@@ -39,7 +39,7 @@ sidebar_bg(side_bg)
 
 
 # Create tabs
-tabs = st.tabs(["📈 Most No. of Reviews", "🗃 Highest Useful Count"])
+tabs = st.tabs(["📈 General Sentiment Analysis", "🗃 Homburg et al. (2015)"])
 
 def generate_wordcloud(text):
             # Set the maximum font size to 50
@@ -90,7 +90,7 @@ with tabs[0]:
                 st.success(most_recommended_drugs_pos[0])
             else:
                 st.success(most_recommended_drug_pos)
-            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Most Loved Drug Reviews:</span></b>", unsafe_allow_html=True)
+            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Most Loved Drug</span></b>", unsafe_allow_html=True)
             positive_text = " ".join(positive_df[positive_df["drugName"] == most_recommended_drug_pos]["patientreview"].tolist())
             generate_wordcloud(positive_text)
         
@@ -100,13 +100,13 @@ with tabs[0]:
                 st.info(least_recommended_drugs_neg[0])
             else:
                 st.info(least_recommended_drug_neg)
-            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Least Loved Drug Reviews:</span></b>", unsafe_allow_html=True)
+            st.write("<b><span style='font-size: 16pt;'>Word Cloud for Least Loved Drug</span></b>", unsafe_allow_html=True)
             negative_text = " ".join(negative_df[negative_df["drugName"] == least_recommended_drug_neg]["patientreview"].tolist())
             generate_wordcloud(negative_text)
 
 # Display the chart in the "Chart" tab
 with tabs[1]:
-    st.subheader("📄 Drug Reviews")
+    st.subheader("💊 Drug Suggestions for " + selected_condition+ " based on Homburg et al. (2015)")
     # Filter the data based on the selected condition
     filtered_df = df[df["condition"] == selected_condition]
 
