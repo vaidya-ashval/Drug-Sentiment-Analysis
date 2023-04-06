@@ -62,14 +62,14 @@ with tabs[0]:
     filtered_df = df[df["condition"] == selected_condition]
 
     # Check if the filtered dataframe only has "neu" values
-    if filtered_df["NRCsent"].nunique() == 1 and filtered_df["NRCsent"].unique()[0] == "Neu":
+    if filtered_df["RobertaSentiment"].nunique() == 1 and filtered_df["RobertaSentiment"].unique()[0] == "Neu":
         only_available_drug = filtered_df["drugName"].iloc[0]
         st.write("Only Available Drug:")
         st.write("- " + only_available_drug)
     else:
         # Filter the data for positive and negative sentiments
-        positive_df = filtered_df[filtered_df["NRCsent"] == "Pos"]
-        negative_df = filtered_df[filtered_df["NRCsent"] == "Neg"]
+        positive_df = filtered_df[filtered_df["RobertaSentiment"] == "Pos"]
+        negative_df = filtered_df[filtered_df["RobertaSentiment"] == "Neg"]
 
         # Get the drugName(s) with the most number of observations for positive and negative sentiments
         most_recommended_drug_pos = positive_df["drugName"].value_counts().idxmax()
@@ -113,14 +113,14 @@ with tabs[1]:
     filtered_df = df[df["condition"] == selected_condition]
 
     # Check if the filtered dataframe only has "neu" values
-    if filtered_df["NRCsent"].nunique() == 1 and filtered_df["NRCsent"].unique()[0] == "neu":
+    if filtered_df["RobertaSentiment"].nunique() == 1 and filtered_df["RobertaSentiment"].unique()[0] == "neu":
         only_available_drug = filtered_df["drugName"].iloc[0]
         st.write("Only Available Drug:")
         st.write("- " + only_available_drug)
     else:
         # Filter the data for positive and negative sentiments
-        positive_df = filtered_df[filtered_df["NRCsent"] == "Pos"]
-        negative_df = filtered_df[filtered_df["NRCsent"] == "Neg"]
+        positive_df = filtered_df[filtered_df["RobertaSentiment"] == "Pos"]
+        negative_df = filtered_df[filtered_df["RobertaSentiment"] == "Neg"]
 
         # Get the drugName(s) with the most number of observations for positive and negative sentiments
         most_useful_drug_pos = positive_df.loc[positive_df["Useful"].idxmax(), "drugName"]
