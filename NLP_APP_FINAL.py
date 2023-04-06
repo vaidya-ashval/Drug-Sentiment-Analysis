@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import base64
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-data_file = 'v5.csv'
+data_file = 'v6.csv'
 
 # Load the data
 df = pd.read_csv(data_file)  # Replace "your_data.csv" with the name of your data file
