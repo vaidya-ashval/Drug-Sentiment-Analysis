@@ -13,6 +13,8 @@ data_file = 'v5.csv'
 # Load the data
 df = pd.read_csv(data_file)  # Replace "your_data.csv" with the name of your data file
 
+st.set_page_config(layout="wide")
+
 # Create a sidebar with a dropdown for selecting the condition
 condition_list = df["condition"].unique().tolist()
 # selected_condition = st.sidebar.selectbox("Select Condition", condition_list)
@@ -60,14 +62,14 @@ with tabs[0]:
     filtered_df = df[df["condition"] == selected_condition]
 
     # Check if the filtered dataframe only has "neu" values
-    if filtered_df["NRCsent"].nunique() == 1 and filtered_df["NRCsent"].unique()[0] == "neu":
+    if filtered_df["NRCsent"].nunique() == 1 and filtered_df["NRCsent"].unique()[0] == "Neu":
         only_available_drug = filtered_df["drugName"].iloc[0]
         st.write("Only Available Drug:")
         st.write("- " + only_available_drug)
     else:
         # Filter the data for positive and negative sentiments
-        positive_df = filtered_df[filtered_df["NRCsent"] == "positive"]
-        negative_df = filtered_df[filtered_df["NRCsent"] == "negative"]
+        positive_df = filtered_df[filtered_df["NRCsent"] == "Pos"]
+        negative_df = filtered_df[filtered_df["NRCsent"] == "Neg"]
 
         # Get the drugName(s) with the most number of observations for positive and negative sentiments
         most_recommended_drug_pos = positive_df["drugName"].value_counts().idxmax()
@@ -117,8 +119,8 @@ with tabs[1]:
         st.write("- " + only_available_drug)
     else:
         # Filter the data for positive and negative sentiments
-        positive_df = filtered_df[filtered_df["NRCsent"] == "positive"]
-        negative_df = filtered_df[filtered_df["NRCsent"] == "negative"]
+        positive_df = filtered_df[filtered_df["NRCsent"] == "Pos"]
+        negative_df = filtered_df[filtered_df["NRCsent"] == "Neg"]
 
         # Get the drugName(s) with the most number of observations for positive and negative sentiments
         most_useful_drug_pos = positive_df.loc[positive_df["Useful"].idxmax(), "drugName"]
