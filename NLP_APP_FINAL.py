@@ -103,6 +103,8 @@ with tabs[0]:
             st.write("<b><span style='font-size: 16pt;'>Most Loved Drug:</span></b>", unsafe_allow_html=True)
             if len(most_recommended_drugs_pos) > 1:
                 st.success(most_recommended_drugs_pos[0])
+                st.write("<b><span style='font-size: 16pt;'>Patient Review:</span></b>", unsafe_allow_html=True)
+                st.success(pos_review)
             else:
                 st.success(most_recommended_drug_pos)
                 st.write("<b><span style='font-size: 16pt;'>Patient Review:</span></b>", unsafe_allow_html=True)
@@ -115,6 +117,8 @@ with tabs[0]:
             st.write("<b><span style='font-size: 16pt;'>Least Loved Drug:</span></b>", unsafe_allow_html=True)
             if len(least_recommended_drugs_neg) > 1:
                 st.info(least_recommended_drugs_neg[0])
+                st.write("<b><span style='font-size: 16pt;'>Patient Review:</span></b>", unsafe_allow_html=True)
+                st.info(neg_review)
             else:
                 st.info(least_recommended_drug_neg)
                 st.write("<b><span style='font-size: 16pt;'>Patient Review:</span></b>", unsafe_allow_html=True)
